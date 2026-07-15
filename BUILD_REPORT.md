@@ -4,7 +4,7 @@ Build date: 2026-07-15. Python: 3.11.9. Source mode exercised: simulation.
 
 | Milestone | Status | Evidence |
 |---|---|---|
-| M1 Scaffold, models, CI | PARTIAL | `pip install -e ".[dev]"` and `canton-observer --help` pass. GitHub Actions matrix is configured for 3.11/3.12; hosted status is pending the first push. |
+| M1 Scaffold, models, CI | DONE | `pip install -e ".[dev]"` and `canton-observer --help` pass. GitHub Actions passed on Python 3.11 and 3.12 in run `29395073368`. |
 | M2 Simulation and scenarios | DONE | Pydantic loads `bilateral_repo`, `fund_tokenization`, and `tri_party_settlement`; `canton-observer scenarios list` prints all three. |
 | M3 Three metrics | DONE | Hand-computed bilateral tests cover 2/3 horizon coverage, three reducibility classes, and Jaccard distance 1/3. Analysis coverage: 96%. |
 | M4 Reports | DONE | Terminal and JSON tests pass. `audit --scenario tri_party_settlement --party SettlementAgent --format html` produced a self-contained badged HTML file. |
