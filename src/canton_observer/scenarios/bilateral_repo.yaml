@@ -1,0 +1,46 @@
+name: bilateral_repo
+description: Bank A and Bank B repo with an undisclosed downstream rehypothecation leg.
+parties:
+  - {party_id: BankA, display_name: Bank A, validator: validator-a}
+  - {party_id: BankB, display_name: Bank B, validator: validator-b}
+contracts:
+  - contract_id: "#repo-agreement"
+    template_id: "Repo:Agreement"
+    signatories: [BankA, BankB]
+    observers: []
+    payload_fields: {notional: 10000000, currency: EUR, references: ["#repo-collateral"]}
+    created_at: "2026-07-15T09:00:00Z"
+  - contract_id: "#repo-collateral"
+    template_id: "Repo:Collateral"
+    signatories: [BankB]
+    observers: [BankA]
+    payload_fields: {market_value: 10250000, references: ["#repo-rehyp-b"]}
+    created_at: "2026-07-15T09:01:00Z"
+  - contract_id: "#repo-rehyp-b"
+    template_id: "Repo:Rehypothecation"
+    signatories: [BankB]
+    observers: []
+    payload_fields: {amount: 2000000}
+    created_at: "2026-07-15T09:02:00Z"
+claims:
+  - claim_id: repo-notional-a
+    subject_party: BankA
+    fact: repo_notional
+    contract_id: "#repo-agreement"
+    input_contracts: ["#repo-agreement"]
+  - claim_id: collateral-value-a
+    subject_party: BankA
+    fact: collateral_value
+    contract_id: "#repo-collateral"
+    input_contracts: ["#repo-collateral"]
+    counterparty_asserted: true
+  - claim_id: downstream-use-a
+    subject_party: BankA
+    fact: downstream_use
+    contract_id: "#repo-agreement"
+    input_contracts: ["#repo-rehyp-b"]
+  - claim_id: repo-notional-b
+    subject_party: BankB
+    fact: repo_notional
+    contract_id: "#repo-agreement"
+    input_contracts: ["#repo-agreement"]

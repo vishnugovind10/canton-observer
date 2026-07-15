@@ -1,0 +1,24 @@
+name: tri_party_settlement
+description: DvP settlement with asymmetric buyer, seller, and agent views.
+parties:
+  - {party_id: Buyer, display_name: Buyer, validator: validator-buyer}
+  - {party_id: Seller, display_name: Seller, validator: validator-seller}
+  - {party_id: SettlementAgent, display_name: Settlement Agent, validator: validator-agent}
+contracts:
+  - contract_id: "#cash-leg"
+    template_id: "Settlement:CashLeg"
+    signatories: [Buyer, SettlementAgent]
+    observers: []
+    payload_fields: {amount: 5000000, references: ["#asset-leg"]}
+    created_at: "2026-07-15T10:00:00Z"
+  - contract_id: "#asset-leg"
+    template_id: "Settlement:AssetLeg"
+    signatories: [Seller, SettlementAgent]
+    observers: []
+    payload_fields: {quantity: 5000, references: ["#cash-leg"]}
+    created_at: "2026-07-15T10:00:01Z"
+claims:
+  - {claim_id: buyer-cash, subject_party: Buyer, fact: cash_leg, contract_id: "#cash-leg", input_contracts: ["#cash-leg"]}
+  - {claim_id: buyer-dvp, subject_party: Buyer, fact: asset_delivery, contract_id: "#cash-leg", input_contracts: ["#asset-leg"]}
+  - {claim_id: seller-asset, subject_party: Seller, fact: asset_leg, contract_id: "#asset-leg", input_contracts: ["#asset-leg"]}
+  - {claim_id: agent-dvp, subject_party: SettlementAgent, fact: delivery_versus_payment, contract_id: "#cash-leg", input_contracts: ["#cash-leg", "#asset-leg"]}

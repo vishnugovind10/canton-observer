@@ -1,0 +1,31 @@
+name: fund_tokenization
+description: Tokenized fund supply viewed from issuer, transfer agent, and investor seats.
+parties:
+  - {party_id: Issuer, display_name: Fund Issuer, validator: validator-issuer}
+  - {party_id: TransferAgent, display_name: Transfer Agent, validator: validator-ta}
+  - {party_id: Investor1, display_name: Investor One, validator: validator-investor-1}
+  - {party_id: Investor2, display_name: Investor Two, validator: validator-investor-2}
+contracts:
+  - contract_id: "#supply"
+    template_id: "Fund:Supply"
+    signatories: [Issuer, TransferAgent]
+    observers: []
+    payload_fields: {total_supply: 1000000}
+    created_at: "2026-07-15T11:00:00Z"
+  - contract_id: "#holding-1"
+    template_id: "Fund:Holding"
+    signatories: [Issuer, Investor1]
+    observers: [TransferAgent]
+    payload_fields: {units: 250000, references: ["#supply"]}
+    created_at: "2026-07-15T11:01:00Z"
+  - contract_id: "#holding-2"
+    template_id: "Fund:Holding"
+    signatories: [Issuer, Investor2]
+    observers: [TransferAgent]
+    payload_fields: {units: 750000, references: ["#supply"]}
+    created_at: "2026-07-15T11:01:01Z"
+claims:
+  - {claim_id: issuer-supply, subject_party: Issuer, fact: total_supply, contract_id: "#supply", input_contracts: ["#supply", "#holding-1", "#holding-2"]}
+  - {claim_id: investor-balance, subject_party: Investor1, fact: token_balance, contract_id: "#holding-1", input_contracts: ["#holding-1"]}
+  - {claim_id: investor-supply, subject_party: Investor1, fact: total_supply, contract_id: "#holding-1", input_contracts: ["#supply"], counterparty_asserted: true}
+  - {claim_id: transfer-supply, subject_party: TransferAgent, fact: total_supply, contract_id: "#supply", input_contracts: ["#supply", "#holding-1", "#holding-2"]}
