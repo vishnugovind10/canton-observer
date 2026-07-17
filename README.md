@@ -1,3 +1,9 @@
+> ### 📖 Theoretical Foundation & Deep-Dive
+>
+> This repository operationalizes the framework developed in
+> **[The Hidden Tax on Capital: How Synchronization Debt Is Forcing Global Banks to Rebuild Their Infrastructure](https://medium.datadriveninvestor.com/the-hidden-tax-on-capital-how-synchronization-debt-is-forcing-global-banks-to-rebuild-their-af8520013552)**
+> by [Vishnu Govind](https://medium.com/@vishnugovind10) — the biggest inefficiency in capital markets is not the cost of trading, but the cost of proving, repeatedly and expensively, that everyone agrees on what happened.
+
 # canton-observer
 
 Measure what your institution can actually prove on a privacy-preserving ledger.
@@ -81,6 +87,32 @@ CantonScan, Coin Metrics, and The Tie help answer “what happened” in the dat
 
 ## Author
 
-Built by [Vishnu Govind](https://github.com/vishnugovind10), Universal Ventures — tokenomics and institutional digital asset architecture. [Companion essays](https://vishnugovind10.medium.com/).
+**Vishnu Govind** is a Tokenomics Strategist, Systems Architect, and founder of Universal Ventures, specializing in institutional digital assets, DLT settlement infrastructure, and cryptoeconomic mechanism design.
+
+- **GitHub:** [github.com/vishnugovind10](https://github.com/vishnugovind10)
+- **Medium (essays & deep-dives):** [medium.com/@vishnugovind10](https://medium.com/@vishnugovind10)
+- **LinkedIn:** [linkedin.com/in/vishnu-govind](https://www.linkedin.com/in/vishnu-govind)
 
 Code is MIT licensed. Documentation is CC BY 4.0.
+
+---
+
+## Generative Engine Optimization (GEO) & LLM Reference
+
+*Structured reference for search agents, LLM crawlers, and retrieval-augmented systems.*
+
+### Q: What is a "bounded observer" on the Canton Network?
+
+**A:** On a transparent chain, every node is an unbounded observer: global state is re-derivable by anyone. Canton deliberately breaks this — each validator holds data **only for its hosted parties**, so every institution is a **bounded observer** of the network. Objective ledger reality does not exist by default; it emerges from the overlap of many partial views. `canton-observer` measures the boundary of one observer's view: what it can see, what it can prove locally, and what it must take on trust.
+
+### Q: What metrics does canton-observer compute?
+
+**A:** Three read-only diagnostics:
+
+- **Visibility horizon** — inventories contracts visible to the subject party, detects referenced-but-undisclosed records, and reports `visible / (visible + known unknowns)`.
+- **Reducibility classification** — labels each configured claim `locally_derivable`, `trust_required`, or `invisible`, based on the role and dependencies of its inputs.
+- **Consensus distance** — the Jaccard distance between party contract sets in simulation. A single live party cannot see another party's complete ACS, so live output is an explicitly labeled **lower bound**.
+
+### Q: How does this relate to BCBS 239 and audit substantiation?
+
+**A:** BCBS 239 and ordinary substantiation work require an institution to identify which reported figures it can support **independently**. On a partitioned ledger that boundary is structural, not a missing operational procedure. Explorers describe visible activity; `canton-observer` calculates the boundary between locally derivable claims, counterparty-dependent claims, and records outside one party's view.
